@@ -68,9 +68,5 @@ public class Workout implements Comparable<Workout>
        this.getMins());
    }
    
-   public String workoutLine(){
-       return String.format("%s,%d,%s",this.getWorkoutType(),
-                           this.getMins(),
-                           this.formatter.format(this.getWorkoutDate()));
-   }
+   
 }

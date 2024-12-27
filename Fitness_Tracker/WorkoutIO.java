@@ -36,6 +36,10 @@ public class WorkoutIO
         while(scanFile.hasNextLine()){
             String line = scanFile.nextLine();
             
+            // in case this is the last line
+            if(line.isBlank())
+                break;
+                
             String[] tokens = line.split(",");
             
             Workout workout = new Workout( WorkoutType.valueOf(tokens[0]),
@@ -65,11 +69,17 @@ public class WorkoutIO
         
         for(Workout workout: workouts) {
             
-            writer.write(workout.workoutLine());
+            writer.println(workoutLine(workout));
         }
         
         writer.close();
         
-        
     }
+    
+    public static String workoutLine(Workout workout){
+       return String.format("%s,%d,%s",workout.getWorkoutType(),
+                           workout.getMins(),
+                           formatter.format(workout.getWorkoutDate()));
+   }
+    
 }
