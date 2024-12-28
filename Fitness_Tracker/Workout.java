@@ -2,8 +2,11 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 
 /**
- * Write a description of class Workout here.
- *
+ *  Represents a workout with properties
+ *  type: Cardio, Strength training upper and lower
+ *  minutes: the duration of the workout
+ *  date: The date of the workout
+ *  
  * @author cee-vance
  * @version 1.0.0
  */
@@ -67,6 +70,5 @@ public class Workout implements Comparable<Workout>
        this.formatter.format(this.getWorkoutDate()),
        this.getMins());
    }
-   
    
 }
