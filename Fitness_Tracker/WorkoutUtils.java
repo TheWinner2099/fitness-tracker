@@ -7,10 +7,14 @@ import java.io.PrintWriter;
 import java.util.Date;
 
 /**
- * Write a description of class WorkoutIO here.
+ * WorkoutUtils
+ * A set of static utility methods
+ * for this application used for reading workouts from a csv file,
+ * converting a Workout to a csv line, and writing a workout array
+ * to a csv file. 
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author cee-vance
+ * @version 1.0.0
  */
 public class WorkoutUtils
 {
@@ -18,6 +22,12 @@ public class WorkoutUtils
     private static final String workoutPath = "workouts.txt";
     private static final SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
     
+    /**
+     * Method getWorkouts
+     * reads workouts from a csv file
+     *
+     * @return an arraylist of workouts
+     */
     public static ArrayList<Workout> getWorkouts()  throws java.text.ParseException {
         File workoutFile = new File(workoutPath);
         Scanner scanFile;
@@ -56,6 +66,12 @@ public class WorkoutUtils
         
     }
     
+    /**
+     * Method saveWorkouts
+     * writes and arraylist of Workouts to a csv file
+     * NOTE: overwrites previous contents of workout file
+     * @param workouts the arraylist to save
+     */
     public static void saveWorkouts(ArrayList<Workout> workouts) {
         File workoutFile = new File(workoutPath);
         
@@ -77,12 +93,27 @@ public class WorkoutUtils
         
     }
     
+    /**
+     * Method workoutToCsvLine
+     * converts a workout to its csv representation:
+     * WorkoutType,Workout Duration,Workout Date (month-date-year)
+     * 
+     * @param workout the workout to convert to csv line
+     * @return The return the string representation
+     */
     public static String workoutToCsvLine(Workout workout){
        return String.format("%s,%d,%s",workout.getWorkoutType(),
                            workout.getMins(),
                            formatter.format(workout.getWorkoutDate()));
    }
    
+   /**
+    * Method dateFromString
+    * converts a string in format month-date-year to a Date object
+    * @param date datestring
+    * @return The return a date object
+    * @throws ParseException if dateString is not in 'MM-dd-yyyy' format
+    */
    public static Date dateFromString(String date)  throws java.text.ParseException {
        
         return formatter.parse(date);

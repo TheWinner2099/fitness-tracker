@@ -18,12 +18,25 @@ public class Workout implements Comparable<Workout>
    
    private SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
    
+   /**
+    * Workout Constructor
+    *
+    * @param workoutType discrete workout types
+    * @param mins the minutes as integer
+    * @param workoutDate Sets the date that the workout happened
+    */
    public Workout( WorkoutType workoutType,int mins, Date workoutDate) {
        this.setWorkoutType(workoutType);
        this.setMins(mins);
        this.setWorkoutDate(workoutDate);
    }
    
+   /**
+    * Workout Constructor
+    * 
+    * @param workoutType discrete workout types
+    * @param mins the minutes as integer
+    */
    public Workout(WorkoutType workoutType,int mins){    
        this(workoutType,mins,new Date());
    }
@@ -58,6 +71,14 @@ public class Workout implements Comparable<Workout>
        this.workoutDate = workoutDate;
    }
    
+   /**
+    * Method compareTo
+    *
+    * sorts Workouts by descending date
+    * 
+    * @param other Workout to compare
+    * @return The return int positive if Workout later, negative otherwise
+    */
    @Override
    public int compareTo(Workout other) {
        return this.getWorkoutDate().compareTo(other.getWorkoutDate());
