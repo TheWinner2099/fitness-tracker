@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.io.PrintWriter;
 import java.util.Date;
+import java.util.Collections;
 
 /**
  * WorkoutUtils
@@ -73,6 +74,10 @@ public class WorkoutUtils
      * @param workouts the arraylist to save
      */
     public static void saveWorkouts(ArrayList<Workout> workouts) {
+        
+        // sort the workouts by date descending
+        Collections.sort(workouts);
+        
         File workoutFile = new File(workoutPath);
         
         PrintWriter writer;
