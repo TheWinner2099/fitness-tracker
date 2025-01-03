@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.io.PrintWriter;
 import java.util.Date;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * WorkoutUtils
@@ -30,12 +29,12 @@ public class WorkoutUtils
      *
      * @return an arraylist of workouts
      */
-    public static List<Workout> getWorkouts()  throws java.text.ParseException {
+    public static ArrayList<Workout> getWorkouts()  throws java.text.ParseException {
         File workoutFile = new File(workoutPath);
         Scanner scanFile;
         
         // initalize workouts
-        List<Workout> workouts = new ArrayList<>();
+        ArrayList<Workout> workouts = new ArrayList<>();
         try {
             
         scanFile = new Scanner(workoutFile);
@@ -57,7 +56,8 @@ public class WorkoutUtils
             
             Workout workout = new Workout( WorkoutType.valueOf(tokens[0]),
                                             Integer.parseInt(tokens[1]),
-                                            formatter.parse(tokens[2]));          
+                                            formatter.parse(tokens[2]));
+                                            
             workouts.add(workout);
             
         }
@@ -73,7 +73,7 @@ public class WorkoutUtils
      * NOTE: overwrites previous contents of workout file
      * @param workouts the arraylist to save
      */
-    public static void saveWorkouts(List<Workout> workouts) {
+    public static void saveWorkouts(ArrayList<Workout> workouts) {
         
         // sort the workouts by date descending
         Collections.sort(workouts);
@@ -122,6 +122,10 @@ public class WorkoutUtils
    public static Date dateFromString(String date)  throws java.text.ParseException {
        
         return formatter.parse(date);
+   }
+   
+   public static String stringFromDate(Date date) {
+       return formatter.format(date);
    }
     
 }
