@@ -66,7 +66,13 @@ public class WorkoutsByWeek {
             String monStr = this.getMondayOfWeek( 
             this.weekFormatter.format(workout.getWorkoutDate()));
                 
-            this.groupedWorkouts.get(monStr).add(workout);
+            if( this.groupedWorkouts.get(monStr) == null) {
+                    List<Workout> workouts = new ArrayList<>();
+                    workouts.add(workout);
+                 this.groupedWorkouts.put(monStr, workouts);  
+            }else{
+                this.groupedWorkouts.get(monStr).add(workout);
+            }
         }
         catch (ParseException pe)
         {
@@ -83,5 +89,28 @@ public class WorkoutsByWeek {
         WorkoutUtils.saveWorkouts(workouts);
     }
     
+    public List<String> getWeeks() throws ParseException {
+        Set<String> keys = this.groupedWorkouts.keySet();
+        
+        List<Date> dateList = new ArrayList<>();
+        
+        for(String dateString: keys) {
+            dateList.add(weekFormatter.parse(dateString));
+        }
+        
+        Collections.sort(dateList);
+        
+        List<String> sortedDateStrings = new ArrayList<>();
+        for(Date date: dateList){
+            sortedDateStrings.add(weekFormatter.format(date));
+        }
+        
+        return sortedDateStrings;
+        
+    }
     
+    @Override 
+    public void finalize() {
+        this.saveWorkouts();
+    }
 }

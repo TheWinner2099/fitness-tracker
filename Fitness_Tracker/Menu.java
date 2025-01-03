@@ -17,13 +17,13 @@ public class Menu {
     private static WorkoutsByWeek wbw;
     private static Scanner scanner;
      public static void main(String[] args) throws ParseException {
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         wbw =  new WorkoutsByWeek();
 
         while (true) {
             System.out.println("\nWorkout Menu:");
             System.out.println("1. Create a new workout");
-            System.out.println("2. Search workouts by date");
+            System.out.println("2. Search workouts by week");
             System.out.println("3. Display workouts stats");
             System.out.println("4. Exit and save workouts");
             System.out.print("Enter your choice: ");
@@ -35,7 +35,7 @@ public class Menu {
                 case 1:
                     Workout workout = addWorkout();
                     wbw.addWorkout(workout);
-                    break;
+                    break; 
                 case 2:
                     displayWorkouts();
                     break;
@@ -55,6 +55,8 @@ public class Menu {
     
     
     public static void displayStats(String week) throws ParseException {
+        
+        displayTitle("Display Week Statistics");
         
         // get the week key
         String monStr = wbw.getMondayOfWeek(week);
@@ -105,27 +107,107 @@ public class Menu {
     
     
     public static Workout addWorkout() {
-        // implementation to add a workout here
-        return null;
+        
+        displayTitle("Add New Workout");
+        
+        // get the type
+            int choice = -1;
+        
+        
+        while( choice < 1 || choice > 3){
+            System.out.println("Input 1 for CARDIO, 2 for STRENGTH_UPPER, 3 for STRENGTH_LOWER:");
+    
+            if(scanner.hasNextInt()) {
+                  choice = scanner.nextInt();  
+            }else{
+                System.out.println("Not a number");
+                scanner.nextLine();
+            }
+        }
+        
+        WorkoutType workoutType = null;
+        
+        switch(choice) {
+            case 1:
+                workoutType = WorkoutType.CARDIO;
+                break;
+            case 2:
+                workoutType = WorkoutType.STRENGTH_TRAINING_UPPER;
+                break;
+            case 3:
+                workoutType = WorkoutType.STRENGHT_TRAINING_LOWER;
+                break;
+        }
+        
+        int mins = -1;
+        
+        while(mins < 0) {
+            System.out.println("Workout Minutes:");
+            if(scanner.hasNextInt()) {
+                mins = scanner.nextInt();
+            }    
+        }
+        
+        // clear the buffer
+        scanner.nextLine();
+        
+        Date workoutDate = getValidDate();
+        
+        Workout workout = new Workout(workoutType,mins,workoutDate);
+        
+        return workout;
     }
     
-    public static void displayWorkouts() {
-        // implementation to display workotus 1 week at a time
+    public static void displayWorkouts() throws ParseException {
+        // loop through workouts
+ 
+        displayTitle("Display Workouts by Week");
+        List<String> weeks = wbw.getWeeks();
+        
+        String response = "";
+        
+        for(String week : weeks ) {
+            
+            displayTitle("Week starting on " + week);
+            for(Workout workout: wbw.getWorkoutByWeek(week)){
+                System.out.println(workout);
+            }
+            System.out.println("-----------------------------");
+            System.out.println("Input any key to view next week or \'x\' to return to menu");
+            response = scanner.next();
+            if(response.contains("x"))
+                break;
+        }
+        
+        
     }
     
     public static Date getValidDate() {
         Date date = null;
-        scanner = new Scanner(System.in);
+        
         while( date == null) {
             
             try{
-                System.out.println("Date (mm-dd-yyyy):");
+                System.out.println("Date (mm-dd-yyyy) or blank for today:");
                 
-                date = WorkoutUtils.dateFromString(scanner.nextLine());
+                String dateStr = scanner.nextLine();
+                
+                // check if default 
+                if(dateStr.isBlank()){
+                    return new Date();
+                }
+                date = WorkoutUtils.dateFromString(dateStr);
             }catch(ParseException exc) {
                 System.out.println("Date was not properly formatted...try again.");
             }
         }
         return date;
+    }
+    
+    public static void displayTitle(String title) {
+        System.out.println("----------------------------");
+        System.out.println(title);
+        System.out.println("----------------------------");
+        
     }
 }
