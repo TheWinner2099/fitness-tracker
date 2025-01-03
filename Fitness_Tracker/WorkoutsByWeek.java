@@ -8,14 +8,16 @@ public class WorkoutsByWeek {
    private Map<String, List<Workout>> groupedWorkouts = new HashMap<>();
    private SimpleDateFormat weekFormatter = new SimpleDateFormat("MM-dd-yyyy");
     
-   public WorkoutsByWeek() { }
+   public WorkoutsByWeek() throws ParseException {
+        this.groupWorkoutsByWeek(WorkoutUtils.getWorkouts());
+    }
 
    /**
     * Group workouts by week where each week starts on Monday and ends on Sunday
     *
     * @param workouts List of Workout objects to be grouped
     */
-   public void groupWorkoutsByWeek(List<Workout> workouts) {
+   private void groupWorkoutsByWeek(List<Workout> workouts) {
        Calendar cal = Calendar.getInstance();
        for (Workout workout : workouts) {
            cal.setTime(workout.getWorkoutDate());
@@ -29,13 +31,14 @@ public class WorkoutsByWeek {
     * Get the grouped workouts
     *
     * @return A Map where the key is the starting date of the week and the value is the list of workouts in that week
-    */
+    
    public Map<String, List<Workout>> getGroupedWorkouts() {
        return groupedWorkouts;
    }
-   
-   public List<Workout> getWorkoutByWeek(String week) {
-        return this.groupedWorkouts.get(week);   
+   */
+  
+   public List<Workout> getWorkoutByWeek(String dateStr) throws ParseException {
+        return this.groupedWorkouts.get(this.getMondayOfWeek(dateStr));   
    }
    
   
@@ -54,10 +57,31 @@ public class WorkoutsByWeek {
         // Set the calendar to the previous or same Monday
         cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
 
-        return weekFormatter.format(cal.getTime());
+        return weekFormatter.format(cal.getTime()); 
     }
-
-      
-
-  
+    
+    public void addWorkout(Workout workout) {
+        try
+        {
+            String monStr = this.getMondayOfWeek( 
+            this.weekFormatter.format(workout.getWorkoutDate()));
+                
+            this.groupedWorkouts.get(monStr).add(workout);
+        }
+        catch (ParseException pe)
+        {
+            pe.printStackTrace();
+        }
+                
+    }
+    
+    public void saveWorkouts() {
+        ArrayList<Workout> workouts = new ArrayList<>();
+        this.groupedWorkouts.forEach((k,v) -> workouts.addAll(v) );
+        // sort
+        
+        WorkoutUtils.saveWorkouts(workouts);
+    }
+    
+    
 }

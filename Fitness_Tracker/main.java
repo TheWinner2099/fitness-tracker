@@ -36,7 +36,7 @@ public class main {
         // workout count
         int cardio = 0, strengthUpper = 0, strengthLower = 0;
         
-        // in case there are no workers for that week
+        // in case there are no workouts for that week
         if(weekWorkouts != null)  {
             
             for(Workout wo: weekWorkouts) {
