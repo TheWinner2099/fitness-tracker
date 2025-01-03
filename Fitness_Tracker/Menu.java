@@ -30,7 +30,7 @@ public class Menu {
 
             int choice = scanner.nextInt();
             scanner.nextLine(); // scan newline
-
+            
             switch (choice) {
                 case 1:
                     Workout workout = addWorkout();
